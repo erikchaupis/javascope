@@ -3,7 +3,7 @@
   "displayName": "JavaScope",
   "description": "Eclipse & IntelliJ-inspired Java editor colors and Eclipse JDT-based Java/JSP formatting for Visual Studio Code.",
   "version": "1.0.0",
-  "publisher": "javascope",
+  "publisher": "erikchaupis",
   "license": "MIT",
   "repository": {
     "type": "git",

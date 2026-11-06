@@ -1,0 +1,141 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Java Server Pages",
+  "scopeName": "text.html.jsp",
+  "fileTypes": ["jsp", "jspf", "tag"],
+  "uuid": "3d9e3f5c-4b0e-4c8e-9d2f-3a1b9c4d5e6f",
+  "injections": {
+    "text.html.jsp string.quoted.double.html, text.html.jsp string.quoted.single.html": {
+      "patterns": [
+        { "include": "#el-expression" }
+      ]
+    }
+  },
+  "patterns": [
+    { "include": "#jsp-comment" },
+    { "include": "#directive" },
+    { "include": "#declaration" },
+    { "include": "#expression" },
+    { "include": "#scriptlet" },
+    { "include": "#el-expression" },
+    { "include": "text.html.basic" }
+  ],
+  "repository": {
+    "jsp-comment": {
+      "name": "comment.block.jsp",
+      "begin": "<%--",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.comment.begin.jsp" }
+      },
+      "end": "--%>",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.comment.end.jsp" }
+      }
+    },
+    "directive": {
+      "name": "meta.directive.jsp",
+      "begin": "<%@",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.directive.jsp" }
+      },
+      "end": "%>",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.directive.jsp" }
+      },
+      "patterns": [
+        {
+          "name": "keyword.control.directive.jsp",
+          "match": "\\b(page|include|taglib|tag|attribute|variable)\\b"
+        },
+        {
+          "name": "entity.other.attribute-name.jsp",
+          "match": "[A-Za-z_][A-Za-z0-9_.:-]*(?=\\s*=)"
+        },
+        { "include": "#strings" },
+        { "include": "#el-expression" }
+      ]
+    },
+    "declaration": {
+      "name": "meta.declaration.jsp",
+      "begin": "<%!",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.embedded.begin.jsp storage.type.modifier.jsp" }
+      },
+      "end": "%>",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.embedded.end.jsp" }
+      },
+      "patterns": [
+        { "include": "source.java" }
+      ]
+    },
+    "expression": {
+      "name": "meta.expression.block.jsp",
+      "begin": "<%=",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.embedded.begin.jsp" }
+      },
+      "end": "%>",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.embedded.end.jsp" }
+      },
+      "patterns": [
+        { "include": "source.java" }
+      ]
+    },
+    "scriptlet": {
+      "name": "meta.scriptlet.jsp source.java.embedded.jsp",
+      "begin": "<%(?![=!@])",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.embedded.begin.jsp" }
+      },
+      "end": "%>",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.embedded.end.jsp" }
+      },
+      "patterns": [
+        { "include": "source.java" }
+      ]
+    },
+    "el-expression": {
+      "name": "meta.expression.jsp",
+      "begin": "\\$\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.expression.jsp" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.expression.jsp" }
+      },
+      "patterns": [
+        { "include": "#strings" },
+        { "name": "keyword.operator.el.jsp", "match": "[?:]|&&|\\|\\||eq|ne|lt|gt|le|ge|not|empty|instanceof|mod|div" },
+        { "name": "constant.language.el.jsp", "match": "\\b(true|false|null)\\b" },
+        { "name": "constant.numeric.el.jsp", "match": "\\b[0-9]+(\\.[0-9]+)?\\b" },
+        { "name": "variable.other.el.jsp", "match": "[A-Za-z_][A-Za-z0-9_]*" }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.jsp",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            { "name": "constant.character.escape.jsp", "match": "\\\\." },
+            { "include": "#el-expression" }
+          ]
+        },
+        {
+          "name": "string.quoted.single.jsp",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            { "name": "constant.character.escape.jsp", "match": "\\\\." },
+            { "include": "#el-expression" }
+          ]
+        }
+      ]
+    }
+  }
+}

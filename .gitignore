@@ -1,0 +1,13 @@
+node_modules/
+out/
+.vscode-test/
+*.vsix
+.DS_Store
+tests/vscode/workspace/.javascope/
+webview/admin/node_modules/
+webview/admin/dist/
+formatters/java/cli/target/
+.github
+.apiscope
+.history
+.javascope

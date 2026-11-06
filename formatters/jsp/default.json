@@ -1,0 +1,11 @@
+{
+  "name": "JavaScope JSP Default",
+  "indentation": { "style": "space", "size": 4 },
+  "lineWidth": 120,
+  "maxBlankLines": 1,
+  "trimTrailingWhitespace": true,
+  "formatScriptletJava": true,
+  "blankLineAfterDirective": true,
+  "keepInlineIfShort": true,
+  "html": { "wrapAttributes": "auto" }
+}

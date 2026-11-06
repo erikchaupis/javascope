@@ -1,0 +1,288 @@
+{
+  "name": "javascope",
+  "displayName": "JavaScope",
+  "description": "Eclipse & IntelliJ-inspired Java editor colors and Eclipse JDT-based Java/JSP formatting for Visual Studio Code.",
+  "version": "1.0.0",
+  "publisher": "javascope",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikchaupis/javascope.git"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Formatters",
+    "Themes"
+  ],
+  "keywords": [
+    "java",
+    "jsp",
+    "eclipse",
+    "intellij",
+    "format",
+    "formatter",
+    "theme",
+    "jdt"
+  ],
+  "activationEvents": [
+    "onLanguage:java",
+    "onLanguage:jsp",
+    "onCommand:javascope.openAdmin",
+    "onCommand:javascope.formatJava",
+    "onCommand:javascope.formatJsp",
+    "workspaceContains:.javascope/settings.json",
+    "onView:javascope.quickAccess"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "build": "npm run build:extension && npm run build:webview",
+    "build:extension": "esbuild src/extension.ts --bundle --platform=node --format=cjs --target=node18 --outfile=out/extension.js --external:vscode --sourcemap",
+    "watch": "esbuild src/extension.ts --bundle --platform=node --format=cjs --target=node18 --outfile=out/extension.js --external:vscode --sourcemap --watch",
+    "build:webview": "cd webview/admin && npm run build",
+    "test": "TS_NODE_PROJECT=tests/tsconfig.json mocha --require ts-node/register \"tests/unit/**/*.test.ts\"",
+    "test:vscode": "node ./tests/vscode/runTest.js",
+    "package": "vsce package --no-dependencies -o javascope.vsix",
+    "vscode:prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.17.9",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.24.2",
+    "mocha": "^10.8.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.1",
+    "fast-xml-parser": "^4.5.7"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "jsp",
+        "extensions": [
+          ".jsp",
+          ".jspf",
+          ".tag"
+        ],
+        "aliases": [
+          "JSP",
+          "Java Server Pages",
+          "jsp"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "jsp",
+        "scopeName": "text.html.jsp",
+        "path": "./syntaxes/jsp.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.scriptlet.jsp": "java",
+          "meta.declaration.jsp": "java",
+          "meta.expression.block.jsp": "java"
+        }
+      }
+    ],
+    "configuration": {
+      "title": "JavaScope",
+      "properties": {
+        "javascope.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable JavaScope entirely."
+        },
+        "javascope.configurationLocation": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "user",
+            "workspace"
+          ],
+          "default": "auto",
+          "description": "Where JavaScope persists settings: 'auto' (workspace .javascope folder when present, otherwise user-level ~/.javascope), 'user' always, or 'workspace' always."
+        },
+        "javascope.themes.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable JavaScope editor color customization for Java/JSP."
+        },
+        "javascope.themes.active": {
+          "type": "string",
+          "default": "eclipse-light",
+          "description": "Active JavaScope editor color scheme."
+        },
+        "javascope.javaFormatter.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the JavaScope Java formatter (Eclipse JDT based)."
+        },
+        "javascope.javaFormatter.activeProfile": {
+          "type": "string",
+          "default": "builtin:java:eclipse-default",
+          "description": "Active Java formatter profile identifier."
+        },
+        "javascope.javaFormatter.formatOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Format Java documents with JavaScope on save."
+        },
+        "javascope.jspFormatter.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the JavaScope JSP formatter."
+        },
+        "javascope.jspFormatter.activeProfile": {
+          "type": "string",
+          "default": "builtin:jsp:default",
+          "description": "Active JSP formatter profile identifier."
+        },
+        "javascope.jspFormatter.formatOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Format JSP documents with JavaScope on save."
+        },
+        "javascope.themes.jspTemplates.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Also apply the active JavaScope scheme's HTML palette (tags, attributes, EL) inside .jsp files. Standalone .html files are untouched."
+        },
+        "javascope.showEditorActions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the JavaScope format button in the editor title bar. Hide it here or via right-click on the title bar (move to the ... overflow); the shortcuts and context menu keep working either way."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "javascope.openAdmin",
+        "title": "JavaScope: Open Administration"
+      },
+      {
+        "command": "javascope.formatJava",
+        "title": "JavaScope: Format Java",
+        "icon": {
+          "dark": "media/javascope.svg",
+          "light": "media/javascope.svg"
+        }
+      },
+      {
+        "command": "javascope.formatJsp",
+        "title": "JavaScope: Format JSP",
+        "icon": {
+          "dark": "media/javascope.svg",
+          "light": "media/javascope.svg"
+        }
+      },
+      {
+        "command": "javascope.selectJavaProfile",
+        "title": "JavaScope: Select Java Formatter Profile"
+      },
+      {
+        "command": "javascope.selectJspProfile",
+        "title": "JavaScope: Select JSP Formatter Profile"
+      },
+      {
+        "command": "javascope.toggleJavaFormatter",
+        "title": "JavaScope: Toggle Java Formatter"
+      },
+      {
+        "command": "javascope.toggleJspFormatter",
+        "title": "JavaScope: Toggle JSP Formatter"
+      },
+      {
+        "command": "javascope.toggleThemes",
+        "title": "JavaScope: Toggle JavaScope Themes"
+      },
+      {
+        "command": "javascope.reloadConfiguration",
+        "title": "JavaScope: Reload Configuration"
+      },
+      {
+        "command": "javascope.formatJavaSelection",
+        "title": "JavaScope: Format Java Selection"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "javascope.formatJava",
+        "key": "ctrl+alt+f",
+        "mac": "cmd+alt+f",
+        "when": "editorTextFocus && editorLangId == java"
+      },
+      {
+        "command": "javascope.formatJsp",
+        "key": "ctrl+alt+f",
+        "mac": "cmd+alt+f",
+        "when": "editorTextFocus && editorLangId == jsp"
+      },
+      {
+        "command": "javascope.formatJavaSelection",
+        "key": "ctrl+alt+shift+f",
+        "mac": "cmd+alt+shift+f",
+        "when": "editorTextFocus && editorLangId == java && editorHasSelection"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "javascope.formatJava",
+          "when": "config.javascope.showEditorActions && editorLangId == java",
+          "group": "navigation"
+        },
+        {
+          "command": "javascope.formatJsp",
+          "when": "config.javascope.showEditorActions && editorLangId == jsp",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "javascope.formatJava",
+          "when": "editorLangId == java",
+          "group": "1_modification@1"
+        },
+        {
+          "command": "javascope.formatJavaSelection",
+          "when": "editorLangId == java && editorHasSelection",
+          "group": "1_modification@2"
+        },
+        {
+          "command": "javascope.formatJsp",
+          "when": "editorLangId == jsp",
+          "group": "1_modification@1"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "javascope",
+          "title": "JavaScope",
+          "icon": "media/javascope.svg"
+        }
+      ]
+    },
+    "views": {
+      "javascope": [
+        {
+          "id": "javascope.quickAccess",
+          "name": "Quick Access"
+        }
+      ]
+    }
+  },
+  "homepage": "https://github.com/erikchaupis/javascope",
+  "bugs": {
+    "url": "https://github.com/erikchaupis/javascope/issues"
+  },
+  "icon": "media/icon.png"
+}

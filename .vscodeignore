@@ -1,0 +1,24 @@
+# development artifacts
+node_modules/**
+.vscode-test/**
+.vscode/**
+.github/**
+tests/**
+scripts/**
+out/extension.js.map
+tsconfig.json
+package-lock.json
+webview/admin/node_modules/**
+webview/admin/src/**
+webview/admin/index.html
+webview/admin/package.json
+webview/admin/package-lock.json
+webview/admin/vite.config.js
+formatters/java/cli/**
+!formatters/java/bin/**
+formatters/java/bin/*.original
+
+# keep in the package:
+# out/extension.js, formatters/java/bin/javascope-jdt-formatter.jar,
+# formatters/java/default.xml, formatters/jsp/default.json, webview/admin/dist/**,
+# syntaxes/**, language-configuration.json, docs/**, README.md, CHANGELOG.md, LICENSE
